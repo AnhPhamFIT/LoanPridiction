@@ -26,7 +26,9 @@ HEADERS = {
         "zip",
         "insurance_percentage",
         "product_type",
-        "co_borrower_credit_score"
+        "co_borrower_credit_score",
+		"mortgage_insurance_type",
+		"relocation_mortgage_indicator"
     ],
     "Performance": [
         "id",
@@ -36,6 +38,7 @@ HEADERS = {
         "balance",
         "loan_age",
         "months_to_maturity",
+		"adjusted_remaining_months_to_maturity",
         "maturity_date",
         "msa",
         "delinquency_status",
@@ -55,7 +58,10 @@ HEADERS = {
         "repurchase_proceeds",
         "other_foreclosure_proceeds",
         "non_interest_bearing_balance",
-        "principal_forgiveness_balance"
+        "principal_forgiveness_balance",
+		"repurchase_make_whole_proceeds_flag",
+		"foreclosure_principal_write_off_amount",
+		"srvicing activity_indicator"
     ]
 }
 
@@ -74,13 +80,13 @@ def concatenate(prefix="Acquisition"):
         if not f.startswith(prefix):
             continue
 
-        data = pd.read_csv(os.path.join(settings.DATA_DIR, f), sep="|", header=None, names=HEADERS[prefix], index_col=False)
+        data = pd.read_csv(os.path.join(settings.DATA_DIR, f), sep="|", header=None, names=HEADERS[prefix], index_col=None)
         data = data[SELECT[prefix]]
         full.append(data)
 
     full = pd.concat(full, axis=0)
 
-    full.to_csv(os.path.join(settings.PROCESSED_DIR, "{}.txt".format(prefix)), sep="|", header=SELECT[prefix], index=False)
+    full.to_csv(os.path.join(settings.PROCESSED_DIR, "{}.txt".format(prefix)), sep="|", header=SELECT[prefix], index=None)
 
 if __name__ == "__main__":
     concatenate("Acquisition")

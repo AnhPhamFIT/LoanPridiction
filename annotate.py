@@ -48,10 +48,10 @@ def annotate(acquisition, performance_summary):
         acquisition[column] = acquisition[column].astype('category').cat.codes
 
     for start in ["first_payment", "origination"]:
-        column = "{}_date".format(start)
-        acquisition["{}_year".format(start)] = pd.to_numeric(acquisition[column].str.split('/').str.get(1))
-        acquisition["{}_month".format(start)] = pd.to_numeric(acquisition[column].str.split('/').str.get(0))
-        del acquisition[column]
+	    column = "{}_date".format(start)		
+	    acquisition["{}_year".format(start)] = pd.to_numeric(acquisition[column].astype('str').str.split('/').str.get(1))
+	    acquisition["{}_month".format(start)] = pd.to_numeric(acquisition[column].astype('str').str.split('/').str.get(0))
+	    del acquisition[column]
 
     acquisition = acquisition.fillna(-1)
     acquisition = acquisition[acquisition["performance_count"] > settings.MINIMUM_TRACKING_QUARTERS]
